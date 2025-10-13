@@ -27,6 +27,8 @@ export default function Footer() {
             <div className="space-y-2">
               <Link href="/" className="block text-gray-400 hover:text-white transition-colors">Home</Link>
               <Link href="/about" className="block text-gray-400 hover:text-white transition-colors">About</Link>
+              <Link href="/services" className="block text-gray-400 hover:text-white transition-colors">Services</Link>
+              <Link href="/training" className="block text-gray-400 hover:text-white transition-colors">Training</Link>
               <Link href="/contact" className="block text-gray-400 hover:text-white transition-colors">Contact</Link>
               <Link href="/login" className="block text-gray-400 hover:text-white transition-colors">Login</Link>
             </div>

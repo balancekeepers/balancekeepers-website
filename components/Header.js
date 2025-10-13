@@ -42,6 +42,8 @@ export default function Header() {
           <div className="hidden md:flex space-x-8">
             <Link href="/" className="text-gray-700 hover:text-orange-600 transition-colors">Home</Link>
             <Link href="/about" className="text-gray-700 hover:text-orange-600 transition-colors">About</Link>
+            <Link href="/services" className="text-gray-700 hover:text-orange-600 transition-colors">Services</Link>
+            <Link href="/training" className="text-gray-700 hover:text-orange-600 transition-colors">Training</Link>
             <Link href="/contact" className="text-gray-700 hover:text-orange-600 transition-colors">Contact</Link>
             {user ? (
               <button onClick={handleLogout} className="text-gray-700 hover:text-orange-600 transition-colors">
@@ -102,6 +104,20 @@ export default function Header() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   About
+                </Link>
+                <Link
+                  href="/services"
+                  className="block px-3 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Services
+                </Link>
+                <Link
+                  href="/training"
+                  className="block px-3 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Training
                 </Link>
                 <Link
                   href="/contact"

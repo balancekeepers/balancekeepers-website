@@ -22,9 +22,18 @@ export function AuthProvider({ children }) {
     return unsubscribe;
   }, []);
 
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
   const value = {
     user,
-    loading
+    loading,
+    logout
   };
 
   return (

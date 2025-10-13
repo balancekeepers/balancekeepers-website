@@ -24,16 +24,6 @@ export default function HomeContent() {
 
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/hero.png"
-            alt="Hero background"
-            fill
-            className="object-cover opacity-10"
-            priority
-          />
-        </div>
-        
         {/* Floating elements */}
         <motion.div
           className="absolute top-20 left-10 w-20 h-20 bg-orange-200 rounded-full opacity-20"
@@ -166,7 +156,7 @@ export default function HomeContent() {
       </motion.section>
 
       {/* Services Section */}
-      <motion.section 
+      <motion.section
         className="py-16 bg-white"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -174,21 +164,21 @@ export default function HomeContent() {
         viewport={{ once: true }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">What We Do Best</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Comprehensive financial solutions tailored to your needs
+              From bookkeeping to financial statements, we provide comprehensive accounting services for personal, companies, and groups
             </p>
           </motion.div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <motion.div 
+            <motion.div
               className="bg-gradient-to-br from-orange-50 to-yellow-50 p-8 rounded-xl border border-orange-100 hover:shadow-lg transition-shadow"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -196,21 +186,20 @@ export default function HomeContent() {
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
             >
-              <motion.div 
+              <motion.div
                 className="w-12 h-12 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg mb-6 flex items-center justify-center"
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.5 }}
               >
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"/>
-                  <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd"/>
+                  <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/>
                 </svg>
               </motion.div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Business Bookkeeping</h3>
-              <p className="text-gray-600">Complete bookkeeping solutions for small to medium businesses, including accounts payable, receivable, and financial reporting.</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Bookkeeping & Reconciling</h3>
+              <p className="text-gray-600">Daily bookkeeping, bank and credit card reconciliation to keep your financial records accurate and up-to-date.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="bg-gradient-to-br from-orange-50 to-yellow-50 p-8 rounded-xl border border-orange-100 hover:shadow-lg transition-shadow"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -218,20 +207,20 @@ export default function HomeContent() {
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
             >
-              <motion.div 
+              <motion.div
                 className="w-12 h-12 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg mb-6 flex items-center justify-center"
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.5 }}
               >
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd"/>
                 </svg>
               </motion.div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Personal Accounting</h3>
-              <p className="text-gray-600">Individual financial record management, financial planning, and personal budgeting services to help you achieve your financial goals.</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Reports & Statements</h3>
+              <p className="text-gray-600">Annual and quarterly reports, financial statements, P&L and balance sheets prepared to industry standards.</p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="bg-gradient-to-br from-orange-50 to-yellow-50 p-8 rounded-xl border border-orange-100 hover:shadow-lg transition-shadow"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -239,19 +228,161 @@ export default function HomeContent() {
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
             >
-              <motion.div 
+              <motion.div
                 className="w-12 h-12 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg mb-6 flex items-center justify-center"
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.5 }}
               >
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/>
                 </svg>
               </motion.div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Financial Consulting</h3>
-              <p className="text-gray-600">Expert financial advice and bookkeeping services to optimize your financial records and ensure compliance with accounting standards.</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Payroll & Audit Prep</h3>
+              <p className="text-gray-600">Payroll submission, audit preparation, and book cleanup services to keep you compliant and organized.</p>
             </motion.div>
           </div>
+
+          <motion.div
+            className="text-center mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link href="/services" className="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all">
+                View All Services
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Training Section */}
+      <motion.section
+        className="py-16 bg-gray-50"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Learn From the Experts</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Want to manage your own books? We offer professional training in QuickBooks, bookkeeping fundamentals, and accounting software
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <motion.div
+              className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -5 }}
+            >
+              <motion.div
+                className="w-16 h-16 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg mb-6 flex items-center justify-center mx-auto"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.5 }}
+              >
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clipRule="evenodd"/>
+                </svg>
+              </motion.div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-3 text-center">QuickBooks Training</h3>
+              <p className="text-gray-600 text-center mb-4">Master QuickBooks Desktop and Online with hands-on training from certified professionals.</p>
+              <ul className="space-y-2 text-gray-600 text-sm">
+                <li className="flex items-center">
+                  <svg className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                  </svg>
+                  One-on-one or group sessions
+                </li>
+                <li className="flex items-center">
+                  <svg className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                  </svg>
+                  Online or on-site training
+                </li>
+                <li className="flex items-center">
+                  <svg className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                  </svg>
+                  Custom curriculum for your needs
+                </li>
+              </ul>
+            </motion.div>
+
+            <motion.div
+              className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -5 }}
+            >
+              <motion.div
+                className="w-16 h-16 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg mb-6 flex items-center justify-center mx-auto"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.5 }}
+              >
+                <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                </svg>
+              </motion.div>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-3 text-center">Accounting Fundamentals</h3>
+              <p className="text-gray-600 text-center mb-4">Learn bookkeeping basics, financial reporting, payroll processing, and more.</p>
+              <ul className="space-y-2 text-gray-600 text-sm">
+                <li className="flex items-center">
+                  <svg className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                  </svg>
+                  Beginner to advanced levels
+                </li>
+                <li className="flex items-center">
+                  <svg className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                  </svg>
+                  Hands-on practical training
+                </li>
+                <li className="flex items-center">
+                  <svg className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                  </svg>
+                  Certificate of completion
+                </li>
+              </ul>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="text-center mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link href="/training" className="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all">
+                Explore Training Programs
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </motion.section>
 
