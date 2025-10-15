@@ -1,0 +1,10 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "leads": {
+      ".read": false,
+      ".write": true
+    }
+  }
+}

@@ -1,10 +1,113 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ref, push } from "firebase/database";
+import { database } from "../../lib/firebase/init";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 export default function ServicesContent() {
+  const [selectedClientType, setSelectedClientType] = useState(null);
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [employeeCount, setEmployeeCount] = useState("");
+  const [memberCount, setMemberCount] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const toggleService = (serviceTitle) => {
+    setSelectedServices(prev =>
+      prev.includes(serviceTitle)
+        ? prev.filter(s => s !== serviceTitle)
+        : [...prev, serviceTitle]
+    );
+  };
+
+  const handleClientTypeChange = (type) => {
+    setSelectedClientType(type);
+    // Reset counts when changing client type
+    if (type !== "Companies") setEmployeeCount("");
+    if (type !== "Groups") setMemberCount("");
+  };
+
+  const formatPhoneNumber = (value) => {
+    // Remove all non-numeric characters
+    const phoneNumber = value.replace(/\D/g, '');
+
+    // Format as (XXX) XXX-XXXX
+    if (phoneNumber.length <= 3) {
+      return phoneNumber;
+    } else if (phoneNumber.length <= 6) {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    } else {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+    }
+  };
+
+  const handlePhoneChange = (e) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setPhone(formatted);
+  };
+
+  const normalizeEmail = (email) => {
+    return email.toLowerCase().trim();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Create reference and get the key
+      const leadsRef = ref(database, 'leads');
+      const newLeadRef = push(leadsRef);
+      const responseKey = newLeadRef.key;
+
+      const formData = {
+        id: responseKey,
+        clientType: selectedClientType,
+        services: selectedServices,
+        email: normalizeEmail(email),
+        phone: phone.replace(/\D/g, ''), // Store only digits
+        phoneFormatted: phone, // Store formatted version too
+        timestamp: new Date().toISOString()
+      };
+
+      // Add employee count for Companies
+      if (selectedClientType === "Companies" && employeeCount) {
+        formData.employeeCount = employeeCount;
+      }
+
+      // Add member count for Groups
+      if (selectedClientType === "Groups" && memberCount) {
+        formData.memberCount = memberCount;
+      }
+
+      // Push to Firebase
+      await push(leadsRef, formData);
+
+      console.log("Form Submission:", formData);
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("There was an error submitting your request. Please try again.");
+    }
+  };
+
+  // Validate form based on client type
+  const isFormValid = () => {
+    if (!selectedClientType || selectedServices.length === 0 || !email || !phone || !agreedToTerms) {
+      return false;
+    }
+    if (selectedClientType === "Companies" && !employeeCount) {
+      return false;
+    }
+    if (selectedClientType === "Groups" && !memberCount) {
+      return false;
+    }
+    return true;
+  };
   const services = [
     {
       title: "Bookkeeping",
@@ -227,30 +330,129 @@ export default function ServicesContent() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Who We Serve</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Step 1: Who We Serve
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We provide tailored accounting solutions for individuals, businesses, and organizations
+              Select the option that best describes you
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {clientTypes.map((type, index) => (
-              <motion.div
-                key={type.title}
-                className="bg-gradient-to-br from-orange-50 to-yellow-50 p-8 rounded-xl border border-orange-100 text-center hover:shadow-lg transition-shadow"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-              >
-                <div className="flex justify-center mb-4">
-                  {type.icon}
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{type.title}</h3>
-                <p className="text-gray-600">{type.description}</p>
-              </motion.div>
-            ))}
+            {clientTypes.map((type, index) => {
+              const isSelected = selectedClientType === type.title;
+              const needsCount = type.title === "Companies" || type.title === "Groups";
+              const currentCount = type.title === "Companies" ? employeeCount : memberCount;
+              const isComplete = !needsCount || (isSelected && currentCount);
+
+              return (
+                <motion.div
+                  key={type.title}
+                  className={`relative rounded-xl border-2 transition-all overflow-hidden ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-orange-500 to-yellow-500 border-orange-500 shadow-xl scale-105'
+                      : 'bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-100 hover:shadow-lg hover:border-orange-300'
+                  }`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -5 }}
+                >
+                  {/* Main Card Content - Clickable */}
+                  <div
+                    onClick={() => handleClientTypeChange(type.title)}
+                    className="p-8 text-center cursor-pointer"
+                  >
+                    <div className="flex justify-center mb-4">
+                      <div className={isSelected ? 'text-white' : ''}>
+                        {type.icon}
+                      </div>
+                    </div>
+                    <h3 className={`text-2xl font-bold mb-3 ${
+                      isSelected ? 'text-white' : 'text-gray-900'
+                    }`}>
+                      {type.title}
+                    </h3>
+                    <p className={`text-sm ${isSelected ? 'text-white/90' : 'text-gray-600'}`}>
+                      {type.description}
+                    </p>
+                  </div>
+
+                  {/* Integrated Counter Section */}
+                  {isSelected && needsCount && (
+                    <motion.div
+                      className="px-8 pb-8"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                    >
+                      <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 border border-white/30">
+                        <label
+                          htmlFor={`count-${type.title}`}
+                          className="block text-sm font-semibold text-white mb-2"
+                        >
+                          {type.title === "Companies" ? "Number of Employees" : "Number of Members"}
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="number"
+                            id={`count-${type.title}`}
+                            min="1"
+                            value={currentCount}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              type.title === "Companies"
+                                ? setEmployeeCount(e.target.value)
+                                : setMemberCount(e.target.value);
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                            placeholder={type.title === "Companies" ? "e.g., 25" : "e.g., 50"}
+                            required
+                            className="w-full px-4 py-3 bg-white border-2 border-white/50 rounded-lg focus:ring-2 focus:ring-white focus:border-white transition-all text-gray-900 font-semibold placeholder:text-gray-400"
+                          />
+                          {currentCount && (
+                            <motion.div
+                              className="absolute right-3 top-1/2 -translate-y-1/2"
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                            >
+                              <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                              </svg>
+                            </motion.div>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Selection Indicator Badge */}
+                  {isSelected && (
+                    <motion.div
+                      className="absolute top-4 right-4"
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    >
+                      {isComplete ? (
+                        <div className="bg-white rounded-full p-2 shadow-lg">
+                          <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                          </svg>
+                        </div>
+                      ) : (
+                        <div className="bg-white rounded-full p-2 shadow-lg">
+                          <svg className="w-6 h-6 text-orange-500 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+                          </svg>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </motion.section>
@@ -271,39 +473,82 @@ export default function ServicesContent() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">What We Offer</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Step 2: What We Offer
+            </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Professional financial services to meet all your accounting needs
+              Select all the services you're interested in
             </p>
+            {selectedServices.length > 0 && (
+              <motion.p
+                className="mt-4 text-orange-600 font-semibold"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                {selectedServices.length} service{selectedServices.length !== 1 ? 's' : ''} selected
+              </motion.p>
+            )}
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <motion.div
-                key={service.title}
-                className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: service.delay }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-              >
+            {services.map((service) => {
+              const isSelected = selectedServices.includes(service.title);
+              return (
                 <motion.div
-                  className="w-12 h-12 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg mb-6 flex items-center justify-center"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.5 }}
+                  key={service.title}
+                  onClick={() => toggleService(service.title)}
+                  className={`p-8 rounded-xl shadow-md cursor-pointer transition-all border-2 ${
+                    isSelected
+                      ? 'bg-gradient-to-br from-orange-500 to-yellow-500 border-orange-500 shadow-xl'
+                      : 'bg-white border-transparent hover:shadow-xl hover:border-orange-200'
+                  }`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: service.delay }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -5 }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  {service.icon}
+                  <div className="flex items-start justify-between mb-4">
+                    <motion.div
+                      className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                        isSelected ? 'bg-white/20' : 'bg-gradient-to-r from-orange-500 to-yellow-500'
+                      }`}
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <div className={isSelected ? 'text-white' : ''}>
+                        {service.icon}
+                      </div>
+                    </motion.div>
+                    {isSelected && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      >
+                        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                        </svg>
+                      </motion.div>
+                    )}
+                  </div>
+                  <h3 className={`text-xl font-semibold mb-3 ${
+                    isSelected ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    {service.title}
+                  </h3>
+                  <p className={isSelected ? 'text-white/90' : 'text-gray-600'}>
+                    {service.description}
+                  </p>
                 </motion.div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{service.title}</h3>
-                <p className="text-gray-600">{service.description}</p>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </motion.section>
 
-      {/* CTA Section */}
+      {/* Contact Form Section */}
       <motion.section
         className="py-20 bg-gradient-to-r from-orange-500 to-yellow-500"
         initial={{ opacity: 0 }}
@@ -311,37 +556,226 @@ export default function ServicesContent() {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.h2
-            className="text-3xl lg:text-4xl font-bold text-white mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Ready to Get Started?
-          </motion.h2>
-          <motion.p
-            className="text-xl text-white/90 mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            Let us handle your books so you can focus on growing your business
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link href="/contact" className="bg-white text-orange-600 px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all inline-block">
-              Contact Us Today
-            </Link>
-          </motion.div>
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          {!submitted ? (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 text-center">
+                Step 3: Get Your Free Consultation
+              </h2>
+              <p className="text-xl text-white/90 mb-8 text-center">
+                Let us know how to reach you and we'll be in touch soon
+              </p>
+
+              <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-2xl p-8 space-y-6">
+                {/* Summary */}
+                <div className="bg-orange-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-900 mb-2">Your Selection:</h3>
+                  <div className="space-y-1 text-sm text-gray-700">
+                    {selectedClientType && (
+                      <div>
+                        <p>
+                          <span className="font-medium">Client Type:</span> {selectedClientType}
+                        </p>
+                        {selectedClientType === "Companies" && employeeCount && (
+                          <p className="ml-4">
+                            <span className="font-medium">Employees:</span> {employeeCount}
+                          </p>
+                        )}
+                        {selectedClientType === "Groups" && memberCount && (
+                          <p className="ml-4">
+                            <span className="font-medium">Members:</span> {memberCount}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                    {selectedServices.length > 0 && (
+                      <div>
+                        <span className="font-medium">Services ({selectedServices.length}):</span>
+                        <ul className="list-disc list-inside ml-4 mt-1">
+                          {selectedServices.map(service => (
+                            <li key={service}>{service}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Email Field */}
+                <div>
+                  <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onBlur={(e) => setEmail(normalizeEmail(e.target.value))}
+                    required
+                    placeholder="your.email@example.com"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all lowercase"
+                  />
+                </div>
+
+                {/* Phone Field */}
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    required
+                    placeholder="(555) 123-4567"
+                    maxLength="14"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Format: (XXX) XXX-XXXX</p>
+                </div>
+
+                {/* Terms and Privacy Agreement */}
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                      <svg className="w-5 h-5 mr-2 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                      </svg>
+                      Privacy & Data Protection
+                    </h4>
+                    <div className="text-xs text-gray-600 leading-relaxed space-y-2">
+                      <p>
+                        <strong>Your Privacy Rights:</strong> By submitting this form, you acknowledge that The Balance Keepers will collect and process the personal information you provide (including name, email, phone number, and service preferences) to respond to your consultation request and provide you with information about our services.
+                      </p>
+                      <p>
+                        <strong>Data Use:</strong> We will use your information solely to contact you regarding your consultation request and to provide relevant information about our accounting services. We will not sell, rent, or share your personal information with third parties for marketing purposes.
+                      </p>
+                      <p>
+                        <strong>California Residents (CCPA):</strong> If you are a California resident, you have the right to request disclosure of the categories and specific pieces of personal information we have collected, the right to request deletion of your personal information, and the right to opt-out of the sale of your personal information (we do not sell personal information). You also have the right not to be discriminated against for exercising these rights.
+                      </p>
+                      <p>
+                        <strong>Other State Privacy Rights:</strong> Residents of Virginia (VCDPA), Colorado (CPA), Connecticut (CTDPA), and Utah (UCPA) have similar rights to access, correct, delete, and obtain a copy of your personal data, as well as opt-out rights for certain data processing activities.
+                      </p>
+                      <p>
+                        <strong>Data Security:</strong> We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.
+                      </p>
+                      <p>
+                        <strong>Contact & Consent Withdrawal:</strong> You may withdraw your consent or exercise your privacy rights at any time by contacting us. For more details, please review our <Link href="/privacy" className="text-orange-600 hover:text-orange-700 underline font-medium">Privacy Policy</Link> and <Link href="/terms" className="text-orange-600 hover:text-orange-700 underline font-medium">Terms of Service</Link>.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Consent Checkbox */}
+                  <div className="flex items-start pt-4 border-t border-gray-300">
+                    <div className="flex items-center h-5">
+                      <input
+                        id="terms-agreement"
+                        type="checkbox"
+                        checked={agreedToTerms}
+                        onChange={(e) => setAgreedToTerms(e.target.checked)}
+                        required
+                        className="w-5 h-5 text-orange-600 bg-white border-gray-300 rounded focus:ring-orange-500 focus:ring-2 cursor-pointer"
+                      />
+                    </div>
+                    <label htmlFor="terms-agreement" className="ml-3 text-sm text-gray-700 cursor-pointer">
+                      <span className="font-semibold">I agree to the data collection and processing described above *</span>
+                      <br />
+                      <span className="text-xs">
+                        I consent to The Balance Keepers collecting and using my personal information as described, and I acknowledge my privacy rights under applicable state and federal laws including CCPA, VCDPA, CPA, CTDPA, and UCPA.
+                      </span>
+                    </label>
+                  </div>
+
+                  {!agreedToTerms && (email || phone) && (
+                    <motion.p
+                      className="mt-3 text-xs text-orange-600 flex items-center"
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    >
+                      <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+                      </svg>
+                      Please check the box to agree to our privacy policy and terms
+                    </motion.p>
+                  )}
+                </div>
+
+                {/* Submit Button */}
+                <motion.button
+                  type="submit"
+                  disabled={!isFormValid()}
+                  className={`w-full py-4 rounded-lg font-semibold text-lg transition-all ${
+                    isFormValid()
+                      ? 'bg-gradient-to-r from-orange-500 to-yellow-500 text-white hover:shadow-xl hover:scale-105 cursor-pointer'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
+                  whileHover={isFormValid() ? { scale: 1.02 } : {}}
+                  whileTap={isFormValid() ? { scale: 0.98 } : {}}
+                >
+                  {!selectedClientType || selectedServices.length === 0
+                    ? 'Please complete steps above'
+                    : (selectedClientType === "Companies" && !employeeCount) || (selectedClientType === "Groups" && !memberCount)
+                    ? `Please enter ${selectedClientType === "Companies" ? "employee" : "member"} count`
+                    : !agreedToTerms
+                    ? 'Please agree to privacy policy'
+                    : 'Get Your Free Consultation'}
+                </motion.button>
+
+                <p className="text-xs text-center text-gray-500 -mt-2">
+                  By submitting this form, you agree to be contacted by The Balance Keepers regarding your consultation request.
+                </p>
+              </form>
+            </motion.div>
+          ) : (
+            <motion.div
+              className="bg-white rounded-xl shadow-2xl p-12 text-center"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <motion.div
+                className="w-20 h-20 bg-green-500 rounded-full mx-auto mb-6 flex items-center justify-center"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+              >
+                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                </svg>
+              </motion.div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Thank You!</h2>
+              <p className="text-lg text-gray-600 mb-6">
+                We've received your information and will be in touch shortly to discuss your needs.
+              </p>
+              <div className="bg-orange-50 p-4 rounded-lg mb-6">
+                <p className="text-sm text-gray-700">
+                  <span className="font-semibold">Client Type:</span> {selectedClientType}
+                  {selectedClientType === "Companies" && employeeCount && (
+                    <span className="ml-2">({employeeCount} employees)</span>
+                  )}
+                  {selectedClientType === "Groups" && memberCount && (
+                    <span className="ml-2">({memberCount} members)</span>
+                  )}
+                </p>
+                <p className="text-sm text-gray-700 mt-2">
+                  <span className="font-semibold">Services:</span> {selectedServices.join(', ')}
+                </p>
+              </div>
+              <Link
+                href="/"
+                className="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all"
+              >
+                Return to Home
+              </Link>
+            </motion.div>
+          )}
         </div>
       </motion.section>
 
