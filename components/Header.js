@@ -24,7 +24,7 @@ export default function Header() {
   };
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-white shadow-sm sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="flex items-center">
@@ -39,12 +39,11 @@ export default function Header() {
           </Link>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             <Link href="/" className="text-gray-700 hover:text-orange-600 transition-colors">Home</Link>
             <Link href="/about" className="text-gray-700 hover:text-orange-600 transition-colors">About</Link>
             <Link href="/services" className="text-gray-700 hover:text-orange-600 transition-colors">Services</Link>
             <Link href="/training" className="text-gray-700 hover:text-orange-600 transition-colors">Training</Link>
-            <Link href="/contact" className="text-gray-700 hover:text-orange-600 transition-colors">Contact</Link>
             {user ? (
               <button onClick={handleLogout} className="text-gray-700 hover:text-orange-600 transition-colors">
                 Logout
@@ -52,6 +51,12 @@ export default function Header() {
             ) : (
               <Link href="/login" className="text-gray-700 hover:text-orange-600 transition-colors">Login</Link>
             )}
+            <Link
+              href="/get-started"
+              className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-5 py-2 rounded-full font-semibold hover:shadow-lg transition-all"
+            >
+              Start Now
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -119,13 +124,6 @@ export default function Header() {
                 >
                   Training
                 </Link>
-                <Link
-                  href="/contact"
-                  className="block px-3 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Contact
-                </Link>
                 {user ? (
                   <button
                     onClick={() => {
@@ -145,6 +143,13 @@ export default function Header() {
                     Login
                   </Link>
                 )}
+                <Link
+                  href="/get-started"
+                  className="block mt-2 px-3 py-2 text-center bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Start Now
+                </Link>
               </div>
             </motion.div>
           )}

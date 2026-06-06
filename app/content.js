@@ -80,8 +80,8 @@ export default function HomeContent() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link href="/contact" className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all inline-block">
-                  Get Free Consultation
+                <Link href="/get-started" className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all inline-block">
+                  Start Now
                 </Link>
               </motion.div>
               <motion.div
@@ -253,8 +253,8 @@ export default function HomeContent() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href="/services" className="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all">
-                View All Services
+              <Link href="/get-started" className="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all">
+                Start Now
               </Link>
             </motion.div>
           </motion.div>
@@ -378,8 +378,8 @@ export default function HomeContent() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href="/training" className="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all">
-                Explore Training Programs
+              <Link href="/get-started" className="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all">
+                Start Now
               </Link>
             </motion.div>
           </motion.div>

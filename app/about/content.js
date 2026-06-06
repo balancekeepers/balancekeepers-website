@@ -70,7 +70,7 @@ export default function AboutContent() {
             >
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">Our Mission</h2>
               <p className="text-lg text-gray-600 mb-6">
-                To empower businesses and individuals with accurate, reliable accounting services and expert financial training. We are committed to providing comprehensive solutions that include bookkeeping, financial reporting, and professional education—helping our clients maintain financial clarity and make confident decisions.
+                To empower businesses and individuals with accurate, reliable accounting services and expert financial training. We are committed to providing comprehensive solutions that include bookkeeping, financial reporting, and professional education. This helps our clients maintain financial clarity and make confident decisions.
               </p>
               <p className="text-lg text-gray-600">
                 Whether you need full-service accounting support or want to learn to manage your own books through our training programs, we're here to be your trusted financial partner every step of the way.
@@ -181,7 +181,7 @@ export default function AboutContent() {
                 To be the leading provider of accessible, high-quality accounting services and financial education, transforming how businesses and individuals approach financial management.
               </p>
               <p className="text-lg text-white/90">
-                We envision a future where financial literacy and professional accounting support are within reach for everyone—from small business owners to large organizations—empowering them to achieve sustainable growth and financial success.
+                We envision a future where financial literacy and professional accounting support are within reach for everyone, from small business owners to large organizations. This empowers them to achieve sustainable growth and financial success.
               </p>
             </motion.div>
             <motion.div
@@ -254,10 +254,10 @@ export default function AboutContent() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">Ready to Get Started?</h2>
           <p className="text-lg text-gray-600 mb-8">
-            Let us help you achieve financial clarity and peace of mind. Contact us today for a free consultation.
+            Tell us what you need in under a minute. We'll handle the rest.
           </p>
-          <Link href="/contact" className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-lg transition-all inline-block">
-            Schedule Free Consultation
+          <Link href="/get-started" className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-lg transition-all inline-block">
+            Start Now
           </Link>
         </div>
       </section>

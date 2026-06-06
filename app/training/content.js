@@ -226,8 +226,8 @@ export default function TrainingContent() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link href="/contact" className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all inline-block">
-                  Schedule Training
+                <Link href="/get-started" className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all inline-block">
+                  Start Now
                 </Link>
               </motion.div>
             </motion.div>
@@ -402,8 +402,8 @@ export default function TrainingContent() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Link href="/contact" className="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all">
-                    Get Started
+                  <Link href="/get-started" className="inline-block bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all">
+                    Start Now
                   </Link>
                 </motion.div>
               </div>
@@ -447,8 +447,8 @@ export default function TrainingContent() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Link href="/contact" className="bg-white text-orange-600 px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all inline-block">
-              Schedule a Consultation
+            <Link href="/get-started" className="bg-white text-orange-600 px-8 py-4 rounded-lg font-semibold hover:shadow-xl transition-all inline-block">
+              Start Now
             </Link>
           </motion.div>
         </div>
