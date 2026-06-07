@@ -4,20 +4,16 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Dashboard from "../components/Dashboard/Dashboard";
 import Loading from "../components/Loading/Loading";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function HomeContent() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
 
   if (loading) {
     return <Loading />;
   }
 
-  if (user) {
-    return <Dashboard />;
-  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
       <Header />

@@ -7,7 +7,6 @@ import { auth } from "../../lib/firebase/init";
 import { useAuth } from "../../contexts/AuthContext";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import Loading from "../../components/Loading/Loading";
 
 export default function LoginContent() {
   const { user, loading } = useAuth();
@@ -19,17 +18,9 @@ export default function LoginContent() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.push("/");
+      router.push("/dashboard");
     }
   }, [user, loading, router]);
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (user) {
-    return null;
-  }
 
   const handleEmailLogin = async (e) => {
     e.preventDefault();

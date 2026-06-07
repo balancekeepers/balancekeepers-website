@@ -1,9 +1,10 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { useAuth } from "../../contexts/AuthContext";
 import Loading from "../../components/Loading/Loading";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 import ProfileUpdate from "../../components/Profile/ProfileUpdate";
 import ProfileChangePassword from "../../components/Profile/ProfileChangePassword";
 
@@ -16,41 +17,24 @@ export default function Profile() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600">Please log in to view your profile.</p>
-          <Link href="/login" className="text-orange-600 hover:text-orange-700 underline mt-2 inline-block">
-            Go to Login
-          </Link>
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
+        <Header />
+        <div className="flex items-center justify-center py-20">
+          <div className="text-center">
+            <p className="text-gray-600">Please log in to view your profile.</p>
+            <Link href="/login" className="text-orange-600 hover:text-orange-700 underline mt-2 inline-block">
+              Go to Login
+            </Link>
+          </div>
         </div>
+        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50">
-      {/* Profile Header */}
-      <div className="bg-white shadow-sm border-b border-gray-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center mr-6">
-                <Image
-                  src="/logo.png"
-                  alt="The Balance Keepers"
-                  width={40}
-                  height={40}
-                  className="mr-3"
-                />
-                <span className="text-xl font-bold text-gray-900">Profile</span>
-              </Link>
-            </div>
-            <Link href="/" className="text-orange-600 hover:text-orange-700 font-medium">
-              ← Back to Dashboard
-            </Link>
-          </div>
-        </div>
-      </div>
+      <Header />
 
       <section className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -180,6 +164,8 @@ export default function Profile() {
           </motion.div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

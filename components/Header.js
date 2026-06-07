@@ -45,9 +45,7 @@ export default function Header() {
             <Link href="/services" className="text-gray-700 hover:text-orange-600 transition-colors">Services</Link>
             <Link href="/training" className="text-gray-700 hover:text-orange-600 transition-colors">Training</Link>
             {user ? (
-              <button onClick={handleLogout} className="text-gray-700 hover:text-orange-600 transition-colors">
-                Logout
-              </button>
+              <Link href="/dashboard" className="text-gray-700 hover:text-orange-600 transition-colors">Dashboard</Link>
             ) : (
               <Link href="/login" className="text-gray-700 hover:text-orange-600 transition-colors">Login</Link>
             )}
@@ -125,15 +123,13 @@ export default function Header() {
                   Training
                 </Link>
                 {user ? (
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
-                    className="block w-full text-left px-3 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-colors"
+                  <Link
+                    href="/dashboard"
+                    className="block px-3 py-2 text-gray-700 hover:text-orange-600 hover:bg-orange-50 rounded-md transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
                   >
-                    Logout
-                  </button>
+                    Dashboard
+                  </Link>
                 ) : (
                   <Link
                     href="/login"
